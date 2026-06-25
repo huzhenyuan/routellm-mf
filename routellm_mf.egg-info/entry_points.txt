@@ -1,0 +1,3 @@
+[console_scripts]
+routellm-calibrate = routellm_mf.cli:calibrate
+routellm-route = routellm_mf.cli:route

@@ -1,0 +1,54 @@
+# routellm-mf configuration
+# Copy this file and edit to match your setup.
+
+# ---------------------------------------------------------------------------
+# Strong model — used for complex / hard prompts
+# ---------------------------------------------------------------------------
+strong_model:
+  model: "llama3:70b"           # Model name as your server knows it
+  base_url: "http://localhost:11434/v1"   # Ollama default
+  api_key: "local"              # Any non-empty string works for local servers
+  temperature: 0.7
+  max_tokens: 2048
+
+# ---------------------------------------------------------------------------
+# Weak model — used for simple prompts (faster & cheaper)
+# ---------------------------------------------------------------------------
+weak_model:
+  model: "llama3:8b"
+  base_url: "http://localhost:11434/v1"
+  api_key: "local"
+  temperature: 0.7
+  max_tokens: 2048
+
+# ---------------------------------------------------------------------------
+# Local embedding model (sentence-transformers, no OpenAI required)
+# ---------------------------------------------------------------------------
+embedding:
+  # Recommended models (auto-downloaded on first use):
+  #   "all-MiniLM-L6-v2"                       — 22 MB, English, very fast
+  #   "paraphrase-multilingual-MiniLM-L12-v2"  — 50 MB, multilingual
+  #   "all-mpnet-base-v2"                       — 420 MB, highest quality English
+  model_name: "all-MiniLM-L6-v2"
+  device: "cpu"       # "cuda" or "mps" for GPU
+  max_chars: 2000     # Truncate input before embedding
+
+# ---------------------------------------------------------------------------
+# Difficulty classifier
+# ---------------------------------------------------------------------------
+classifier:
+  # Path to a trained .joblib classifier (produced by routellm-calibrate).
+  # Leave commented out to use the built-in rule-based heuristic.
+  # model_path: "classifier.joblib"
+
+  # Prompts with score >= threshold are sent to the strong model.
+  threshold: 0.50
+
+  # Blend weight: 1.0 = pure heuristic, 0.0 = pure trained model.
+  # When model_path is set, you may want e.g. 0.3 to mostly rely on the ML model.
+  heuristic_weight: 1.0
+
+# ---------------------------------------------------------------------------
+# Misc
+# ---------------------------------------------------------------------------
+verbose: false    # Set to true to print routing decisions to stdout
