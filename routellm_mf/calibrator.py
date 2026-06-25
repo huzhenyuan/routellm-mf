@@ -138,9 +138,12 @@ class Calibrator:
         self._classifier._config.heuristic_weight = cfg_backup
 
         acc = accuracy_score(labels, preds)
-        report = classification_report(labels, preds, target_names=["easy", "hard"])
-        print(f"\nAccuracy: {acc:.3f}\n{report}")
-        return {"accuracy": acc, "report": report}
+        report_str = classification_report(labels, preds, target_names=["easy", "hard"])
+        report_dict = classification_report(
+            labels, preds, target_names=["easy", "hard"], output_dict=True
+        )
+        print(f"\nAccuracy: {acc:.3f}\n{report_str}")
+        return {"accuracy": acc, "report": report_str, "metrics": report_dict}
 
     # ------------------------------------------------------------------ #
     # Cross-validation
